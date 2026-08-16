@@ -6,32 +6,30 @@
 
 class Solution:
     def reorderList(self, head: Optional[ListNode]) -> None:
-        curr = head
-        last = secondLast = None
-        while(curr):
-            if(not curr.next):
-                last = curr
-            
-            if(curr.next and (not curr.next.next)):
-                secondLast = curr
-            
-            curr = curr.next
+        slow_ptr, fast_ptr = head, head
+        while fast_ptr and fast_ptr.next:
+            slow_ptr = slow_ptr.next
+            fast_ptr = fast_ptr.next.next
         
-        if(not (last and secondLast)):
-            return 
+        curr1, curr2, slow_ptr.next = head, slow_ptr.next, None
+        curr2 = self.reverseList(curr2)
 
-        if(secondLast == head):
-            return 
+        while curr2:
+             tmp1, tmp2 = curr1.next, curr2.next
+             curr1.next = curr2
+             curr2.next = tmp1
+             curr1, curr2 = tmp1, tmp2
+        return
 
-        secondLast.next = None
-        last.next = head.next
-        head.next = last
-
-        self.reorderList(head.next.next)
+    def reverseList(self, head):
+        prev, curr = None, head
+        while curr:
+            temp = curr.next
+            curr.next = prev
+            prev = curr
+            curr = temp
+        
+        return prev
 
 
         
-        
-
-
-      

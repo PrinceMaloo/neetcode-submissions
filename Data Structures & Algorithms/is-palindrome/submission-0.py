@@ -1,23 +1,30 @@
 class Solution:
     def isPalindrome(self, s: str) -> bool:
-        L, R = 0, len(s)-1
 
-        while(L<R):
-            ascii_L = ord(s[L])
-            ascii_R = ord(s[R])
+        l, r = 0, len(s) - 1
+        while l < r:
+            left_ch = s[l]
+            right_ch = s[r]
+
+            if not self.validCharacter(left_ch):
+                l += 1
+                continue
             
-            if(not (48 <= ascii_L <= 57 or  65 <= ascii_L <= 90 or  97 <= ascii_L <= 122)):
-                L += 1
-                continue
-            if(not (48 <= ascii_R <= 57 or  65 <= ascii_R <= 90 or  97 <= ascii_R <= 122)):
-                R -= 1
+            if not self.validCharacter(right_ch):
+                r -= 1
                 continue
 
-            if(s[L].lower() != s[R].lower()):
+            if left_ch.lower() != right_ch.lower():
                 return False
-            L+= 1
-            R -= 1
-        return True
+            
+            l += 1
+            r -= 1
         
+        return True
+    
+    def validCharacter(self, char):
+        if ord('A') <= ord(char) <= ord('Z') or ord('a') <= ord(char) <= ord('z') or ord('0') <= ord(char) <= ord('9'):
+            return True
 
+        return False  
         

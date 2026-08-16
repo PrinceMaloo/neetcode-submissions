@@ -1,21 +1,8 @@
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        resultant = 0
-        n = len(prices)
-        curr = prices[0]
-
-        if(n == 0 or n==1):
-            return resultant
-            
-
-        for i in range(1,n):
-            diff = prices[i] - curr
-            if(diff < 0):
-                curr = prices[i]
-            else:
-                resultant = max(resultant, diff)
+        profit = 0
+        for i in range(0, len(prices)):
+            for j in range(i + 1, len(prices)):
+                profit = max(profit, prices[j]- prices[i])
         
-        return resultant
-
-
-        
+        return profit

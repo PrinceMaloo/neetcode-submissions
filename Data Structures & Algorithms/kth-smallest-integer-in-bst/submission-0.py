@@ -7,17 +7,19 @@
 
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        result = []
+        preorder_traversal = []
+        self.preorder(root, preorder_traversal)
+        
+        return preorder_traversal[k-1]
+        
+    
 
-        def dfs(root):
-            if not root:
-                return
+    def preorder(self, root, preorder_traversal):
+        if not root:
+            return
+        
+        self.preorder(root.left, preorder_traversal)      
+        preorder_traversal.append(root.val)
+        self.preorder(root.right, preorder_traversal)
             
-            dfs(root.left)
-            result.append(root.val)
-            dfs(root.right)
-        
-        dfs(root)
-        
-        return result[k-1]
-        
+        return

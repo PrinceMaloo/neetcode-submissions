@@ -1,7 +1,9 @@
+
 class TrieNode:
     def __init__(self):
-        self.word = False
         self.children = {}
+        self.is_word = False
+
 
 class WordDictionary:
 
@@ -10,51 +12,38 @@ class WordDictionary:
         
     def addWord(self, word: str) -> None:
         curr = self.root
-        for s in word:
-            if s not in curr.children:
-                curr.children[s] = TrieNode()
+        for ch in word:
+            if ch not in curr.children:
+                curr.children[ch] = TrieNode()
             
-            curr = curr.children[s]
+            curr = curr.children[ch] 
         
-        curr.word = True        
+        curr.is_word = True
+        
 
     def search(self, word: str) -> bool:
         curr = self.root
-        for (index,s) in enumerate(word):
-            if s != '.':
-                if s not in curr.children:
-                    return False
-            else:
-                return self.searchAtDot(word[index+1:],curr)
+        def dfs(curr, i):
+            if i == len(word):
+                return curr.is_word
             
-            curr = curr.children[s]
-        
-        return curr.word
-
+            if word[i] != '.' and word[i] not in curr.children:
+                return False
             
-    def searchAtDot(self,word,curr):
-        if(len(word) == 0):
-            for child in curr.children.values():
-                if(child.word == True):
+            if word[i] in curr.children:
+                return dfs(curr.children[word[i]], i + 1)
+            
+            for child_trie_node in curr.children.values():
+                if dfs(child_trie_node, i + 1):
                     return True
+            
             return False
 
-        for node in curr.children.values():
-            curr = node
-            for (index,s) in enumerate(word):
-                if s != '.':
-                    if s not in curr.children:
-                        break
-                    else:
-                        if(index == len(word) - 1 and curr.children[s].word):
-                            return True                     
-                else:
-                    return self.searchAtDot(word[index+1:],curr)
-                
-                curr = curr.children[s]
-                    
-        return False
+        return dfs(curr, 0)
+            
         
+
+
 
 
         

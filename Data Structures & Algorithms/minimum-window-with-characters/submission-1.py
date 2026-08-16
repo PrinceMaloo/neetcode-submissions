@@ -1,26 +1,41 @@
+from collections import Counter
+
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        m = len(s)
-        n = len(t)
-         
-        min_substring, min_substring_length = "", float("inf")
+        count = Counter(t)
+        set_t = set(t)
+        l, result = 0, None
+        for r in range(len(s)):
+            if s[r] in set_t:
+                count[s[r]] -= 1
 
-        for i in range(m):
-            substring = ""
-            counter = defaultdict(int)
-            for k in range(n): 
-                counter[t[k]] += 1
+            print('count', count)
 
-            for j in range(i, m):
-                substring += s[j]
-                if s[j] in counter and counter[s[j]] > 0:
-                    counter[s[j]] -= 1
+            while self.ValidSubstring(count) and l <= r:
+                if result is None:
+                    result = [l,r]
+                else:
+                    result = result if (result[1]-result[0] < r-l) else [l, r]
+
+                if s[l] in set_t:
+                    count[s[l]] += 1
+                l += 1
+
+        return s[result[0]:result[1]+1] if result else ""
+                    
                 
-                if sum(counter.values()) == 0 and len(substring) < min_substring_length:
-                    min_substring = substring
-                    min_substring_length = len(substring)
-            
-        return "" if min_substring_length == float("inf") else min_substring
+    def ValidSubstring(self, count):
+        for val in count.values():
+            if val > 0:
+                return False
+        
+        return True
+                
+
+
+
+        
+                
 
 
 

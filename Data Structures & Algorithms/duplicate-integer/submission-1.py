@@ -1,12 +1,6 @@
 class Solution:
     def hasDuplicate(self, nums: List[int]) -> bool:
-        seen = set()
-        for num in nums:
-            if num in seen:
-                return True
-            seen.add(num)
+        nums2 = set(nums)
+        return len(nums2) != len(nums)
 
-        return False
-        
-        
         

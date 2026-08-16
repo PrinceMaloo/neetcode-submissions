@@ -1,25 +1,17 @@
 class Solution:
     def isValid(self, s: str) -> bool:
+        map = {'}': '{', ')': '(', ']' : '['}
+        openbracket_set = set(['(', '[', '{'])
         stack = []
-        dict = {'}': '{', ')':'(', ']':'['}
-        openPara = set(['(', '[','{'])
-
-        for val in s:
-            if(val in openPara):
-                stack.append(val)
-
-            if(val in dict.keys()):
-                if(len(stack) == 0):
+        for i in range(len(s)):
+            if s[i] in openbracket_set:
+                stack.append(s[i])
+            else:
+                if not stack or stack.pop() != map[s[i]]:
                     return False
+                
+        return True if len(stack) == 0 else False
+                
 
-                top = stack.pop()
 
-                if(top != dict[val]):
-                    return False
 
-        if(len(stack) != 0):
-            return False
-            
-        return True
-
-        

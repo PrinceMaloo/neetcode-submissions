@@ -1,26 +1,30 @@
+from collections import Counter
+
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        hashMap = {}
-        ans = []
+        count = Counter(nums)
+        array = [[] for i in range(len(nums))]
+        result = []
 
-        for num in nums:
-            hashMap[num] = hashMap.get(num,0) + 1
+        for index, val in count.items():
+            array[val-1].append(index)
 
-        sortedList = sorted(hashMap.items(), key = lambda x : x[1], reverse = True)
-        # print(sortedList)
+        for i in range(len(nums)-1, -1, -1):
+            while array[i]:
+                if len(result) == k:
+                    break
+                result.append(array[i].pop())
 
-        for ele in sortedList:
-            if(len(ans) >= k):
-                break
-            ans.append(ele[0])
+        
+        return result
 
-        return ans
+
+        
+
 
 
             
-        
 
 
 
-        
         

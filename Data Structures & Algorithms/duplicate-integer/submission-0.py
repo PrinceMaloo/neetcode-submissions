@@ -1,11 +1,12 @@
+from collections import Counter
+
 class Solution:
     def hasDuplicate(self, nums: List[int]) -> bool:
-        hashMap  = {}
-        for num in nums:
-            if num in hashMap:
+        map = Counter(nums)
+        for value in map.values():
+            if value > 1:
                 return True
-            hashMap[num] = False
+        
         return False
-        
-        
+
         
