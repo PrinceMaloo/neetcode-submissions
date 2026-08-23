@@ -1,44 +1,38 @@
+from collections import defaultdict
+
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        adj = {}
-        edges = set()
+        #Cycle detection 
+        adjacency_list = defaultdict(list)
 
-        for a,b in prerequisites:
-            if b not in adj:
-                adj[b] = []          
-            if a not in adj:
-                adj[a] = []
+        for n1, n2 in prerequisites:
+            adjacency_list[n1].append(n2)
         
-            adj[b].append(a)
-
-        def bfs(key):
-            queue = deque()
-            visit = set()
-            queue.append(key)
-            visit.add(key)
-
-            while(queue):
-                k = queue.popleft()             
-                for neighbour in adj[k]:
-                    if neighbour == key:
-                        return False
-                    
-                    if neighbour not in visit:
-                        queue.append(neighbour)
-                        visit.add(neighbour)
-            return True
-
-        
-        for key in adj:
-            if not bfs(key):
+        visit = set()
+        for i in range(numCourses):
+            cycle = set()
+            if self.dfs(i, visit, cycle, adjacency_list):
                 return False
             
         return True
+    
+    def dfs(self, node, visit, cycle, adjacency_list):
+        if node in cycle:
+            return True
+        
+        if node in visit:
+            return False
+        
+        visit.add(node)
+        cycle.add(node)
 
+        for neighbour in adjacency_list[node]:
+            if self.dfs(neighbour, visit, cycle, adjacency_list):
+                return True
             
-
-
-
+        cycle.remove(node)
+            
+        return False
 
 
         
