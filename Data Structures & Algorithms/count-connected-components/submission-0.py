@@ -2,30 +2,28 @@ class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
         visit = set()
         adjacency_list = defaultdict(list)
-        result = 0
+        cnt = 0
 
-        for (src,dist) in edges:
+        for src, dist in edges:
             adjacency_list[src].append(dist)
             adjacency_list[dist].append(src)
 
-        def dfs(n):
-            if n in visit:
+        def dfs(i):
+            if i in visit:
                 return
             
-            visit.add(n)
-
-            for next_element in adjacency_list[n]:
-                if next_element not in visit:
-                    dfs(next_element)
+            visit.add(i)
+            for neigh in adjacency_list[i]:
+                dfs(neigh)
             
             return
-        
+
         for i in range(n):
             if i not in visit:
+                cnt += 1
                 dfs(i)
-                result += 1
         
-        return result
-
-
+        return cnt
+        
+        
         
