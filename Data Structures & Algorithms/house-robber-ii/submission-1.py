@@ -1,19 +1,17 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        numsModified = nums[:len(nums)-1]
-        cache1 = {}
-        cache2 = {}
-        
-        def dfs(index,array,cache):
-            if(index >= len(array)):
-                return 0
-            
-            if index in cache:
-                return cache[index]
-            
-            cache[index] = max(array[index] + dfs(index + 2,array,cache), dfs(index+1,array,cache))
-            return cache[index]
-        
-        return max(nums[0] + dfs(2,numsModified,cache1), dfs(1,nums,cache2))
+        dp = [[0, nums[0]], [0, 0]]
+        for i in range(1, len(nums)):
+            if i == len(nums) - 1:
+                temp2 = dp[1][1]
+                dp[1][1] = max(dp[1][1], nums[i] + dp[1][0])
+                dp[1][0] = temp2 
+                break
 
+            temp1, temp2 = dp[0][1], dp[1][1]
+            dp[0][1] = max(dp[0][1], nums[i] + dp[0][0])
+            dp[1][1] = max(dp[1][1], nums[i] + dp[1][0])
+            dp[0][0], dp[1][0] = temp1, temp2 
+        
+        return max(dp[0][1], dp[1][1])
         
