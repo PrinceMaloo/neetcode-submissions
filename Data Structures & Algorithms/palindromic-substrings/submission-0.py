@@ -1,18 +1,15 @@
 class Solution:
     def countSubstrings(self, s: str) -> int:
-        count = 0
-        
-        def helper(left,right):
-            count = 0 
-            while(left >= 0 and right < len(s) and s[left] == s[right]):
-                left -= 1
-                right += 1
-                count += 1
-            
-            return count
+        dp, cnt = [[False]*len(s) for i in range(len(s))], 0
 
-        for i in range(len(s)):
-            count += helper(i,i) + helper(i,i+1)
-        
-        return count
+        for i in range(len(s)-1, -1, -1):
+            for j in range(i, len(s)):
+                flag = True
+                if j - i > 2:
+                    flag = dp[i+1][j-1]
+                
+                dp[i][j] = flag and s[i] == s[j]
+                if dp[i][j]:
+                    cnt += 1
             
+        return cnt
