@@ -1,28 +1,28 @@
 class Solution:
-    def numDecodings(self, s: str) -> int:  
+    def numDecodings(self, s: str) -> int:
+        dp = {}
 
         def dfs(i):
-            if(i == len(s)):
+            if i >= len(s):
                 return 1
-            if(not self.isValidString(s[i])):
+            
+            if s[i] == '0':
                 return 0
             
-            res = dfs(i + 1)
+            if i in dp:
+                return dp[i]
 
-            if(i + 1 < len(s) and self.isValidString(s[i:i+2])):
-                res += dfs(i + 2)
+            cnt = dfs(i+1)
+            if i + 1 < len(s) and self.isvalid(s[i] + s[i+1]):
+                cnt += dfs(i + 2)
 
-            return res
-
-        return dfs(0)             
-
-    def isValidString(self,s):
-        if(len(s) == 1 and s == '0'):
-            return False
-        if(len(s) == 2 and (int(s) < 10 or int(s) > 26)):
-            return False
+            dp[i] = cnt
+            return cnt
         
-        return True
-
-         
+        return dfs(0)
+    
+    def isvalid(self, string):
+        if 10 <= int(string) <= 26:
+            return True
         
+        return False
